@@ -1,99 +1,230 @@
 .mainContainer {
-    background-color: rgb(216, 185, 234);
+    background-color: #FFF0F5;
     width: 100%;
     margin: 0 auto;
     max-width: 1800px;
-    height: 100vh;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+    font-family: 'Arial', sans-serif;
 }
 
-.headerContainer{
-    padding: 0.5rem;
+.headerContainer {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: #FF69B4;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
-
 
 .nav {
     display: flex;
-    background-color: rgb(189, 108, 236);
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    padding: 2rem;
-
+    padding: 1rem 2rem;
+    color: white;
 }
 
 .nav h1 {
-    font-size: 35px;
+    font-size: 2rem;
+    color: white;
 }
 
 .nav ul {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    gap: 20px;
     list-style: none;
-    gap: 10px;
-    letter-spacing: 0.1em;
+}
+
+.anchorTag {
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s ease;
 }
 
 .anchorTag:hover {
-    color: rgb(255, 195, 195);
-    transition: color 0.3s ease-in-out;
+    color: #FFB6C1;
 }
 
-.nav ul li a {
-    color: white;
-    font-size: 20px;
-    font-weight: 500;
+.anchorTag::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -5px;
+    left: 0;
+    background-color: white;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
 }
 
-.bannerContainer {
-    background-color: rgb(216, 185, 234);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem;
-}
-
-.bannerImage {
-    overflow: hidden;
-    fill: none;
+.anchorTag:hover::after {
+    transform: scaleX(1);
 }
 
 .bannerImage img {
     width: 100%;
+    max-height: 600px;
     object-fit: cover;
 }
 
+.aboutContainer {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 3rem;
+    background-color: #FFF0F5;
+}
 
+.aboutChild {
+    flex-basis: 40%;
+    text-align: center;
+    color: black;
+}
 
+.aboutChild img {
+    width: 300px;
+    height: 360px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #FF69B4;
+}
 
+.portfolioSection, .servicesSection, .contactSection {
+    padding: 3rem;
+    text-align: center;
+    background-color: #FFFFFF;
+    color: black;
+}
 
+.sliderContainer.autoSlider {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    overflow: hidden;
+}
 
+.sliderImage {
+    width: calc(33.333% - 20px);
+    height: 400px;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    border-radius: 10px;
+}
 
+.servicesContainer {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+}
 
+.serviceCard {
+    background-color: #FFF0F5;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex-basis: 22%;
+}
 
+.contactForm {
+    display: flex;
+    flex-direction: column;
+    max-width: 500px;
+    margin: 0 auto;
+    gap: 15px;
+}
 
+.contactForm input,
+.contactForm textarea {
+    padding: 10px;
+    border: 1px solid #FF69B4;
+    border-radius: 5px;
+    background: white;
+}
 
+.contactForm button {
+    background-color: #FF69B4;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
 
-/* MOBILE HANLDING */
+.contactForm button:hover {
+    background-color: #FF1493;
+}
 
+.footer {
+    background-color: #FF69B4;
+    color: white;
+    text-align: center;
+    padding: 2rem;
+}
+
+.socialLinks {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.socialLinks a {
+    color: white;
+    transition: color 0.3s ease;
+}
+
+.socialLinks a:hover {
+    color: #FFB6C1;
+}
+
+/* Mobile Responsiveness */
 @media screen and (max-width: 768px) {
     .nav {
         flex-direction: column;
         text-align: center;
-        gap: 5px;
-        font-size: 5px;
-        padding: 1rem;
-    }
-
-    .anchorTag {
-        font-size: 14px !important;
+        font-size: 15px;
     }
 
     .nav h1 {
-        font-size: 25px;
+        font-size: 20px;
+        padding: 5px;
     }
 
-    .bannerImage img {
+    .nav ul {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    .bannerImage img{
         height: 50vh;
+    }
+
+    .sliderContainer.autoSlider {
+        gap: 10px;
+    }
+
+    .sliderImage {
+        width: 90%;
+        height: 300px;
+    }
+
+    .aboutContainer,
+    .servicesContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .aboutChild,
+    .serviceCard {
+        width: 100%;
+        max-width: 300px;
     }
 }
