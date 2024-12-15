@@ -1,12 +1,15 @@
 "use client"
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from "./hompage.module.css"
 import Link from "next/link"
 import { Instagram, Facebook, Mail, Phone } from 'lucide-react';
+import emailjs from '@emailjs/browser';
+
 
 const SinglePagePortfolio = () => {
     const [activeSlides, setActiveSlides] = useState([0, 1, 2]);
     const [isMobile, setIsMobile] = useState(false);
+    const form = useRef();
 
     const portfolioImages = [
         "https://ik.imagekit.io/tanushree/T/banner1/WhatsApp%20Image%202024-12-12%20at%2011.11.36%20PM.jpeg?updatedAt=1734184184190",
@@ -32,12 +35,8 @@ const SinglePagePortfolio = () => {
             setIsMobile(window.innerWidth <= 768);
         };
 
-        // Check initial screen size
         checkMobile();
-
-        // Add event listener to check screen size
         window.addEventListener('resize', checkMobile);
-
         return () => {
             window.removeEventListener('resize', checkMobile);
         };
@@ -47,44 +46,41 @@ const SinglePagePortfolio = () => {
         const slideInterval = setInterval(() => {
             setActiveSlides(prevSlides => {
                 if (isMobile) {
-                    // For mobile, shift single slide
                     return [(prevSlides[0] + 1) % portfolioImages.length];
                 } else {
-                    // For desktop, shift three slides
-                    return prevSlides.map(slide => 
+                    return prevSlides.map(slide =>
                         (slide + 1) % portfolioImages.length
                     );
                 }
             });
-        }, 3000); // Change slide every 3 seconds
+        }, 3000);
 
         return () => clearInterval(slideInterval);
     }, [isMobile, portfolioImages.length]);
 
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
-
-    const handleInputChange = (e) => {
-        const { name, value } = e.target;
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Implement form submission logic (you might want to replace this with actual form submission)
-        console.log('Form submitted:', formData);
-        alert('Thank you for your message! I\'ll get back to you soon.');
+        let serviceId = process.env.NEXT_PUBLIC_API_SERVICE_ID;
+        let templateId = process.env.NEXT_PUBLIC_API_TEMPLATE_ID;
+        let secretKey= process.env.NEXT_PUBLIC_API_PUBLIC_KEY;
+        
+        emailjs
+            .sendForm(serviceId,templateId , form.current, {
+                publicKey: secretKey,
+            })
+            .then(
+                () => {
+                    console.log('SUCCESS!');
+                },
+                (error) => {
+                    console.log('FAILED...', error.text);
+                },
+            );
     };
 
     return (
         <div className={styles.mainContainer}>
-            {/* Navigation */}
             <div className={styles.headerContainer}>
                 <nav className={styles.nav}>
                     <h1>Tanushree Makeovers</h1>
@@ -121,7 +117,7 @@ const SinglePagePortfolio = () => {
                     </div>
                     <div className={styles.aboutChild}>
                         <h2>About Me</h2>
-                        <p>Hi, I'm Tanushree, a passionate makeup artist with 1 year of experience in creating stunning looks for every occasion. My mission is to enhance your natural beauty and boost your confidence.</p>
+                        <p>Hi, I'm Tanushree, a passionate makeup artist with good experience in creating stunning looks for every occasion. My mission is to enhance your natural beauty and boost your confidence.</p>
                     </div>
                 </div>
             </section>
@@ -130,16 +126,16 @@ const SinglePagePortfolio = () => {
             <section id="portfolio" className={styles.portfolioSection}>
                 <h2>My Portfolio</h2>
                 <div className={`${styles.sliderContainer} ${styles.autoSlider}`}>
-                    {(isMobile 
-                        ? [activeSlides[0]] 
+                    {(isMobile
+                        ? [activeSlides[0]]
                         : activeSlides).map((slideIndex, index) => (
-                        <img
-                            key={index}
-                            src={portfolioImages[slideIndex]}
-                            alt={`Portfolio ${slideIndex + 1}`}
-                            className={styles.sliderImage}
-                        />
-                    ))}
+                            <img
+                                key={index}
+                                src={portfolioImages[slideIndex]}
+                                alt={`Portfolio ${slideIndex + 1}`}
+                                className={styles.sliderImage}
+                            />
+                        ))}
                 </div>
             </section>
 
@@ -159,28 +155,23 @@ const SinglePagePortfolio = () => {
             {/* Contact Form Section */}
             <section id="contact" className={styles.contactSection}>
                 <h2>Contact Me</h2>
-                <form onSubmit={handleSubmit} className={styles.contactForm}>
+                <form ref={form} onSubmit={handleSubmit} className={styles.contactForm}>
                     <input
                         type="text"
-                        name="name"
+                        name="user_name"
                         placeholder="Your Name"
-                        value={formData.name}
-                        onChange={handleInputChange}
                         required
                     />
                     <input
                         type="email"
-                        name="email"
+                        name="user_email"
                         placeholder="Your Email"
-                        value={formData.email}
-                        onChange={handleInputChange}
+
                         required
                     />
                     <textarea
                         name="message"
                         placeholder="Your Message"
-                        value={formData.message}
-                        onChange={handleInputChange}
                         required
                     />
                     <button type="submit">Send Message</button>
@@ -198,8 +189,8 @@ const SinglePagePortfolio = () => {
                     </a>
                 </div>
                 <div className={styles.contactInfo}>
-                    <p><Mail /> tanushreemakeovers@email.com</p>
-                    <p><Phone /> +91 12345 67890</p>
+                    <p><Mail /> tanushreemadav@email.com</p>
+                    <p><Phone /> +919326272150</p>
                 </div>
                 <p className={styles.copyrightText}>
                     © 2024 Tanushree Makeovers. All Rights Reserved.
