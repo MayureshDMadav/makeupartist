@@ -4,6 +4,7 @@ import styles from "./hompage.module.css"
 import Link from "next/link"
 import { Instagram, Facebook, Mail, Phone } from 'lucide-react';
 import emailjs from '@emailjs/browser';
+import toast from 'react-hot-toast';
 
 
 const SinglePagePortfolio = () => {
@@ -71,10 +72,11 @@ const SinglePagePortfolio = () => {
             })
             .then(
                 () => {
-                    console.log('SUCCESS!');
+                    toast.success("Successfully submitted", {position:'top-right',style:{ fontSize:'14px',color:'green',fontWeight:'600'}})    
+                    form.current.reset();
                 },
                 (error) => {
-                    console.log('FAILED...', error.text);
+                    toast.error("Submitted Failed Please try again tommorrow", {position:'bottom-right',style:{ fontSize:'14px',color:'red',fontWeight:'600'}})    
                 },
             );
     };
@@ -181,7 +183,7 @@ const SinglePagePortfolio = () => {
             {/* Footer Section */}
             <footer className={styles.footer}>
                 <div className={styles.socialLinks}>
-                    <a href="https://instagram.com/tanushreemakeovers" target="_blank" rel="noopener noreferrer">
+                    <a href="https://www.instagram.com/tanushree_makeovers_20/" target="_blank" rel="noopener noreferrer">
                         <Instagram />
                     </a>
                     <a href="https://facebook.com/tanushreemakeovers" target="_blank" rel="noopener noreferrer">
